@@ -55,6 +55,8 @@ git submodule update --init fortran_tools
 git -C fortran_tools checkout master
 ```
 
+確認に使用する変換ツールのコミットは，作業時の最新版である以下を採用した。
+
 - fortran_tools: a4749bec40a7577c22283eb2694345bee8e179e3
 - f2f: d45131973e832eaf30e03c6189294544532e2f4d
 
