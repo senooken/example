@@ -6,7 +6,7 @@ FORTRAN 77のソースファイルのFortran 90への変換ツールを検証す
 - FORTRAN.F: 変換元FORTRAN 77ソースファイル
 - fortran_tools.f90: fortran_toolsによる変換結果
 - f2f.f90: f2fによる変換結果
-- fortran_tools: Python製の変換ツール[fortran_tools](https://github.com/arktools/fortran_tools)を格納
+- fortran_tools/: Python製の変換ツール[fortran_tools](https://github.com/arktools/fortran_tools)を格納
 - f2f/: Perl製の変換ツール[f2f](https://bitbucket.org/lemonlab/f2f/)を格納
 
 ## 観点
@@ -14,15 +14,13 @@ FORTRAN 77からFortran 90への変換では，以下の項目に注目する。
 
 1. コメント文字: `C`の`!`への変換
 2. 継続行: 6列目の`0`とスペース ` ` 以外の文字の配置を行末の`&`に変換
-3. DO文の終端: CONTINUEからEND DOへ変換
+3. DO文の終端: `CONTINUE`から`END DO`へ変換
 4. インデント: FORTRAN 77では7列目から記述が始まるのでこのインデントの変更
-5. 比較演算子: .EQ., .NE., .LT., .LE., .GT., .GE.を対応する記号に変換
+5. 比較演算子: `.EQ., .NE., .LT., .LE., .GT., .GE.` を対応する記号に変換
 6. 日本語対応: ソースファイル内の日本語を文字化けさせずに変換
 
 ## コンパイル方法
-変換元の検証用ソースコードは前述の6の観点を確認できるようなソースコードとなっている。
-
-レガシー感を出すため，英字を大文字にしている。
+変換元の検証用ソースコード (FORTRAN.F) は前述の6の観点を確認できるようなソースコードとなっている。 レガシー感を出すため，英字を大文字にしている。
 
 以下のコマンドでコンパイルし，実行できる。
 
@@ -51,8 +49,9 @@ gfortran -o FORTRAN.exe FORTRAN.F && ./FORTRAN.exe
 以下のコマンドでサブモジュールを更新することで，アクセスする。
 
 ```
+git clone https://github.com/senooken/example
+cd example/Fortran/f77tof90
 git submodule update --init fortran_tools
-git -C fortran_tools checkout master
 ```
 
 確認に使用する変換ツールのコミットは，作業時の最新版である以下を採用した。
@@ -64,7 +63,6 @@ git -C fortran_tools checkout master
 FORTRAN 77コードのFortran 90コードへの変換は，変換ツールを使って以下のコマンドで変換できる。
 
 ```
-chmod +x f2f/f2f.pl
 ./f2f/f2f.pl --tab 2 --base-indent 0 FORTRAN.F f2f.f90
 perl ./f2f/f2f.pl --tab 2 --base-indent 0 FORTRAN.F f2f.f90
 python fortran_tools/fortran_tools/fixed2free.py fortran_tools.f90
@@ -114,31 +112,52 @@ Usage:
 `--tab` オプションは，オプション名だけだとわかりにくいが，タブだけでなく，インデントを指定したスペースに変換する。デフォルトはPythonと同じ4となっている。
 自分のコーディング規約に応じて，必要に応じて `--tab 2` などに変更するとよいだろう。
 
-FORTRAN 77コードは，7列目から記述が始まる (固定形式) ため，デフォルトでインデントが存在していることになる。
-
-Fortran 90以降の自由形式に変換する場合，デフォルトのインデントは不要になるため，`--base-indent 0` を指定したほうがいいだろう。
+FORTRAN 77コードは，7列目から記述が始まる (固定形式) ため，デフォルトでインデントが存在していることになる。 Fortran 90以降の自由形式に変換する場合，デフォルトのインデントは不要になるため，`--base-indent 0` を指定したほうがいいだろう。
 
 ## 変換結果
 変換結果の`fortran_tools.f90`と`f2f.f90`を見比べる。
 
-`fortran_tools.f90` では，以下の項目が変換できていない。
+`fortran_tools.f90` では，以下の項目が**変換できていない**。
 
-- do文の終端のcontinueがend doへの変換
-- 比較演算子 (.EQ., .LT.) の変換
+- do文の終端の`continue`の`end do`への変換
+- 比較演算子 (`.EQ., .LT.`) の変換
 
 その他，意図しない以下の変換が行われていた。
 
-- .AND.の.and.への小文字化
+- `.AND.`の`.and.`への小文字化
 - if文内の丸括弧の削除
 
-一方， `f2f.f90` は基本的に期待していた変換が一通りなされている。
+該当コードを以下にに抜粋した。
 
-しかし，以下2点の予期しない変換が行われていた。
+```
+      DO 10 I=1, 4
+        IF (I .EQ. I/2*2 .and. I .LT. 3) THEN
+          PRINT *, I
+        END IF
+10    CONTINUE
+```
+
+一方， `f2f.f90` は基本的に期待していた変換が一通りなされている。 しかし，以下2点の予期しない変換が行われていた。
 
 - 冒頭のコメントブロックで2列名が空白に置換
 - プログラム末尾の`END` が `END PROGRAM` に変換
 
+以下に抜粋した。
+
+```
+! CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+!C \file      FORTRAN.F
+!C \author    SENOO, Ken
+!C \copyright CC0
+!C \version   0.0.0
+!C \date      Created: 2019-08-28 Wed
+!C \date      Updated: 2019-08-31 Sat
+!C \sa        https://senooken.jp/blog/2014/08/08/
+! CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+...
+END PROGRAM
+```
+
 `f2f` は必要な変換が一通りなされているものの，一部期待しない結果となっている。
 
-この結果を判断して，使用する。あるいは，自作するのもありだろう。
-
+この結果を承知で使用する。あるいは，受け入れられないならば，変換ツールを自作するのもありだろう。
