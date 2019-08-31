@@ -1,0 +1,6 @@
+[submodule "Fortran/f77tof90/fortran_tools"]
+	path = Fortran/f77tof90/fortran_tools
+	url = https://github.com/arktools/fortran_tools
+[submodule "Fortran/f77tof90/f2f"]
+	path = Fortran/f77tof90/f2f
+	url = ./Fortran/f77tof90/f2f
