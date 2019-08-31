@@ -51,8 +51,12 @@ gfortran -o FORTRAN.exe FORTRAN.F && ./FORTRAN.exe
 以下のコマンドでサブモジュールを更新することで，アクセスする。
 
 ```
-git submodule update --init f2f fortran_tools
+git submodule update --init fortran_tools
+git -C fortran_tools checkout master
 ```
+
+- fortran_tools: a4749bec40a7577c22283eb2694345bee8e179e3
+- f2f: d45131973e832eaf30e03c6189294544532e2f4d
 
 ## 変換
 FORTRAN 77コードのFortran 90コードへの変換は，変換ツールを使って以下のコマンドで変換できる。
