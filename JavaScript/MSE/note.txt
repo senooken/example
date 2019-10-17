@@ -1,0 +1,105 @@
+
+ここが参考になる。
+https://developers.google.com/web/fundamentals/media/mse/basics
+
+
+基本的な考え方
+
+1. メディアの再生用のaudioかvideo要素を用意
+2. MediaSourceインスタンスを生成し、SourceBufferでメディア要素を供給
+3. fetch か XHRによりResponseオブジェクトからメディアデータを呼び出す。
+4. Response.arrayBuffer() を呼び出し、MediaSource.SourceBufferにデータを供給する。
+
+``` js
+// Get media element.
+var media = document.querySelector("video");
+
+// Feature detection.
+if (window.MediaSource) {
+  // Create MediaSource instance.
+  var mediaSource = new MediaSource();
+  // Turning to MediaSource instance to src URL.
+  element.src = URL.createObjectURL(mediaSource);
+  mediaSource.addEventListener("sourceopen", sourceOpen);
+} else {
+  console.log("The Media Source Extensions API is not supported.);
+}
+
+function sourceOpen(e) {
+  URL.revokeObjectURL(element.src);
+  // Create a SourceBuffer and get the media file.
+  // MIME.
+  var mime = 'video/webm; codecs="opus, vp09.00.10.09"';
+  // e.target refers to the mediaSource instance.
+  // Store it in a variable so it canbe used in a closure.
+  var mediaSource = e.target;
+  var sourceBuffer = mediaSource.addSourceBuffer(mime);
+
+  // Fetch data.
+  var url = "droid.webm";
+  fetch(url)
+    .then(function(response) {
+        return response.arrayBuffer();
+    })
+  .then(function(arrayBuffer) {
+      sourceBuffer.addEventListener("updateend", function(e) {
+        if (!sourceBuffer.updating && mediaSource.readyState === "open") {
+          mediaSource.endOfStream();
+        }
+      });
+      sourceBuffer.appendBuffer(arrayBuffer);
+  })
+}
+```
+
+生成したMediaSourceインスタンスはURLに変換でき、メディア要素のsrc属性に変換する。
+
+URL.createObjectURL() 自体は同期的だが、データの追加は非同期で行う。この非同期での処理には2種類の方法がある。
+
+1個目の方法は、MediaSourceのreadyStateプロパティを使う方法だ。readyStateプロパティはMediaSourceインスタンスとメディア要素の関係を説明してくれる。このプロパティは以下のいずれかの値を持つ。
+
+- closed: メディア要素へ接続されていない。
+- open: メディア要素に接続され、データの受け取り準備完了か、データ受け取り中。
+- ended: メディア要素に接続され、全データを受け取った。
+
+なお、幸運なことに、readyStateプロパティの変化時にMediaSourceインスタンスはsourceopen, souceclosed, souceendedのイベントを発火する。
+
+つまり、このイベントのタイミングで必要な処理を行えばよい。
+
+まず、sourceopenのイベントで、データのフェッチとバッファーを行う。
+
+なお、このタイミングでrevokeObjectURL() を呼んでいる。ちょっと呼ぶのが早いように思えるが、ここで呼んでおくと使わなくなったタイミングでガベージコレクションを処理できる。
+
+
+## SourceBufferの生成
+ここまできて、いよいよSourceBufferの生成の番だ。SourceBufferはMediaSourceとメディア要素の間のデータの橋渡しを行う。
+
+SourceBufferは読み込むファイルのメディアタイプの指定が必要となる。
+
+慣例として、addSourceBuffer()の呼び出しでSourceBufferの生成を行う。この関数の引数にメディアタイプを指定してSourceBufferを生成する。
+
+
+## Get the media file
+インターネットでMSEの例を探すと、XHRを使たものをたくさん見かけるだろう。より最先端になるため、ここではFetch APIとPromiseを使う。
+
+
+## Process the response object
+ここまででだいたいできたのだが、これだけだと再生できない。なぜならば、ResponseオブジェクトからSourceBufferの取得が必要だからだ。
+
+ResponseオブジェクトからMediaSourceインスタンスの取得の典型的な方法は、ResponseオブジェクトからArrayBufferを取得し、SourceBufferへ渡すことだ。response.arrayBufferではじめる。受け取ったSourceBufferをpromiseの次のthenブロックで受け取って、sourceBufferに追加してやる。
+
+## Call endOfStream()
+全てのArrayBufferを追加したら、期待されるデータがなくなるので、MediaSource.endOfStream()を呼ぶ。これはMediaSource.readyStateをendedに変更し、souceendedイベントを発火する。
+
+
+なお、updateendというイベントがSourceBufferにある。このイベントはappendBufferの後に発火する。
+そのほかupdatingという読み取り専用のプロパティもある。これは現在データが更新中かどうかを表す。
+
+
+
+
+
+
+
+
+
