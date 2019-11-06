@@ -3,9 +3,9 @@
 ## \file      apt-partial-upgrade.sh
 ## \author    SENOO, Ken
 ## \copyright CC0
-## \version   0.0.0
+## \version   0.0.1
 ## \date      Created: 2019-10-05 Sat
-## \date      Updated: 2019-10-05 Sat
+## \date      Updated: 2019-11-06 Wed
 ## \sa        https://senooken.jp/blog/2019/10/05/
 ## \brief     Package partial upgrade partial with APT.
 ################################################################################
@@ -21,14 +21,15 @@ sed -n '/The following packages will be upgraded:/,${/^  /{
 	s/^  //; s/ /\n/pg;
 }}' $APT_UPGRADE_LOG >$PACKAGE_LIST_LOG
 
-echo "Upgrade package and uninstall i386 package."
+echo "Upgrade all installed packages."
 sleep 5
 
 ## Uninstall i386 and upgrade the others.
 while i=0 read -r pkg; do
 	echo $((i++)) $pkg
 	case "$pkg" in
-		*i386) sudo apt remove -y $pkg;;
+		## i386 package is requied WINE.
+		# *i386) sudo apt remove -y $pkg;;
 		*) sudo apt install -y $pkg;;
 	esac
 done <$PACKAGE_LIST_LOG

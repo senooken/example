@@ -37,8 +37,6 @@ Ubuntuを始めとするDebian系のLinuxディストリビューションが採
 
 コマンドの実行結果としては， `sudo apt upgrade -y` と同じになる。
 
-なお，x86_64アーキテクチャを想定しており，不要なはずのi386のパッケージをアンインストールする。
-
-更新対象パッケージをカスタマイズする場合，`Upgrade package and uinstall i386 package.` が表示されている最中に，C-cで `apt-partial-upgrade.sh` を中断し， `package-list.log` を修正する。
+更新対象パッケージをカスタマイズする場合，`Upgrade all installed packages.` が表示されている最中に，C-cで `apt-partial-upgrade.sh` を中断し， `package-list.log` を修正する。
 
 その後， `apt-partial-upgrade.sh` の最後のwhile文以外をコメントアウトして，while文から実行する。
