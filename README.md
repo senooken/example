@@ -24,6 +24,7 @@ git ls-files | xargs -n 1 -i echo '- [{}]({})'
 - [Fortran/f77tof90/fortran_tools](Fortran/f77tof90/fortran_tools)
 - [Fortran/f77tof90/fortran_tools.f90](Fortran/f77tof90/fortran_tools.f90)
 - [GN/note.md](GN/note.md)
+- [Git/post-commit.sync-gh-pages](Git/post-commit.sync-gh-pages)
 - [JavaScript/MSE/index.html](JavaScript/MSE/index.html)
 - [JavaScript/MSE/main.js](JavaScript/MSE/main.js)
 - [JavaScript/MSE/note.txt](JavaScript/MSE/note.txt)
@@ -37,4 +38,3 @@ git ls-files | xargs -n 1 -i echo '- [{}]({})'
 - [shell/apt-partial-upgrade/apt-upgrade.log](shell/apt-partial-upgrade/apt-upgrade.log)
 - [shell/apt-partial-upgrade/package-list.log](shell/apt-partial-upgrade/package-list.log)
 - [shell/interpreter.sh](shell/interpreter.sh)
-
