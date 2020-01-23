@@ -8,7 +8,7 @@ GitHub Pagesで[静的サイト](https://senooken.github.io/example/)として�
 なお，このリストは以下のコマンドで生成した。
 
 ```
-git ls-files | xargs -n 1 -i echo '- [{}]({})'
+git ls-files | xargs -n 1 -I {} echo '- [{}]({})'
 ```
 
 - [.gitmodules](.gitmodules)

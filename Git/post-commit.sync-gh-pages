@@ -1,25 +1,23 @@
+:
 ################################################################################
-## \file post-commit.sync-gh-pages
-## \author SENOO, Ken
+## \file      post-commit.sync-gh-pages
+## \author    SENOO, Ken
 ## \copyright CC0
-## \date Created: 2020-01-23T20:52+09:00
-## \date Updated: 2020-01-23T21:59+09:00
-## \sa   https://senooken.jp/post/2020/01/24/
-## \brief プロジェクトサイトのGitHub Pages用のクライアントサイドGitフック
+## \date      Created: 2020-01-23T20:52+09:00
+## \sa        https://senooken.jp/post/2020/01/24/
+## \brief プロジェクトサイトGitHub Pagesの自動更新用クライアントサイドGitフック
 ##
 ## # Introduction
 ## GitHub Pagesによる静的サイトをプロジェクト単位で作る場合，gh-pagesブランチ利用する。
 ##
 ## しかし，masterブランチのコミットごとに手作業でgh-pagesブランチをmasterブランチに同期させるのは手間がかかる。
-
+#
 ## そこで，クライアントサイドのGitフックでコマンドを実行させて，gh-pagesブランチをmasterブランチに自動同期させる。
-
+#
 ## # Usage
 ## 自動同期させたいGitリポジトリー直下 `.git/hooks/` にこのファイルの名前を `post-commit` に変更し，実行権限を付与する。
 ##
 ## これにより，以降はコミットごとにこのファイルに記述されたgh-pagesブランチのmasterブランチへの自動同期がなされ，GitHub Pagesが最新に更新される。
 ################################################################################
 
-git rebase master gh-pages
-git push -f origin gh-pages
-git checkout master
+git push -f origin master:gh-pages
