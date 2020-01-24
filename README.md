@@ -32,6 +32,7 @@ git ls-files | xargs -n 1 -I {} echo '- [{}]({})'
 - [PHP/array-access-with-unquoted-strings.php](PHP/array-access-with-unquoted-strings.php)
 - [PHP/session.php](PHP/session.php)
 - [README.md](README.md)
+- [WebAPI/GitHub/GistBookmarklet/index.js](WebAPI/GitHub/GistBookmarklet/index.js)
 - [shell/apt-partial-upgrade/.gitignore](shell/apt-partial-upgrade/.gitignore)
 - [shell/apt-partial-upgrade/README.md](shell/apt-partial-upgrade/README.md)
 - [shell/apt-partial-upgrade/apt-partial-upgrade.sh](shell/apt-partial-upgrade/apt-partial-upgrade.sh)
