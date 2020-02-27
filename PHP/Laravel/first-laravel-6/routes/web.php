@@ -23,3 +23,7 @@ Route::post('/books', function (Request $request) {
 
 Route::delete('/book/{book}', function (Book $book) {
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
