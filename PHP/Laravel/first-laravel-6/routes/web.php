@@ -15,7 +15,7 @@ use App\Book;
 use Illuminate\Http\Request;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('books');
 });
 
 Route::post('/books', function (Request $request) {
