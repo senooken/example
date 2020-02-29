@@ -15,7 +15,8 @@ use App\Book;
 use Illuminate\Http\Request;
 
 Route::get('/', function () {
-    return view('books');
+  $books = Book::orderBy('created_at', 'asc')->get();
+  return view('books', ['books' => $books]);
 });
 
 Route::post('/books', function (Request $request) {
