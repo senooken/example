@@ -38,6 +38,8 @@ Route::post('/books', function (Request $request) {
 });
 
 Route::delete('/book/{book}', function (Book $book) {
+  $book->delete();
+  return redirect('/');
 });
 
 Auth::routes();
