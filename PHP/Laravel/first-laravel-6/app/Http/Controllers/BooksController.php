@@ -9,6 +9,10 @@ use Validator;
 
 class BooksController extends Controller
 {
+  public function __construct() {
+    $this->middleware('auth');
+  }
+
   // Update
   public function update(Request $request) {
     $validator = Validator::make($request->all(), [
