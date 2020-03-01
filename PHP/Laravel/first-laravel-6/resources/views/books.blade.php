@@ -2,17 +2,35 @@
 @section('content')
 
 <div class="card-body">
-  <div class="card-title">
-    本のタイトル
-  </div>
 
   @include('common.errors')
 
   <form action="{{ url('books') }}" method="POST" class="form-horizontal">
     {{ csrf_field() }}
     <div class="form-group">
+      <div class="card-title">
+        本のタイトル
+      </div>
       <div class="col-sm-6">
         <input type="text" name="item_name" class="form-control" />
+      </div>
+      <div class="card-title">
+        本の数量
+      </div>
+      <div class="col-sm-6">
+        <input type="number" name="item_number" class="form-control" />
+      </div>
+      <div class="card-title">
+        本の金額
+      </div>
+      <div class="col-sm-6">
+        <input type="number" name="item_amount" class="form-control" />
+      </div>
+      <div class="card-title">
+        本の公開日時
+      </div>
+      <div class="col-sm-6">
+        <input type="date" name="published" class="form-control" />
       </div>
     </div>
     <div class="form-group">
