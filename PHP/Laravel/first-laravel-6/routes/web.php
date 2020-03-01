@@ -14,26 +14,20 @@
 use App\Book;
 use Illuminate\Http\Request;
 
-Route::get('/', function () {
-  $books = Book::orderBy('created_at', 'asc')->get();
-  return view('books', ['books' => $books]);
-});
+// 本ダッシュボードを表示
+Route::get('/', 'BooksController@index');
 
+// 登録処理
 Route::post('/books', 'BooksController@store');
 
-Route::delete('/book/{book}', function (Book $book) {
-  $book->delete();
-  return redirect('/');
-});
-
-
 // 更新画面
-Route::post('/booksedit/{books}', function(Book $books) {
-  return view('booksedit', ['book' => $books]);
-});
+Route::post('/booksedit/{books}', 'BooksController@edit');
 
 // 更新処理
 Route::post('/books/update', 'BooksController@update');
+
+// 本を削除
+Route::delete('/book/{book}', 'BooksController@destroy');
 
 Auth::routes();
 

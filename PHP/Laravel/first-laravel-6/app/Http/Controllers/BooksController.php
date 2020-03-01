@@ -53,4 +53,19 @@ class BooksController extends Controller
     $books->save();
     return redirect('/');
   }
+
+  public function index() {
+    $books = Book::orderBy('created_at', 'asc')->get();
+    return view('books', ['books' => $books]);
+  }
+
+  public function edit(Books $books) {
+    return view('booksedit', ['book' => $books]);
+  }
+
+  public function destroy(Book $book) {
+    $book->delete();
+    return redirect('/');
+  }
+
 }
