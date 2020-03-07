@@ -19,6 +19,7 @@ class CreateBooksTable extends Migration
             $table->string('item_name');  // book title
             $table->integer('item_number');  // book amount
             $table->integer('item_amount');  // book price
+            $table->string('item_img');
             $table->datetime('published');  // published date
             $table->timestamps();
         });
