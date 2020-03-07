@@ -11,6 +11,17 @@ class BooksTableSeeder extends Seeder
      */
     public function run()
     {
-        //
+      $faker = Faker\Factory::create('ja_JP');
+      for ($i = 0; $i < 10; ++$i) {
+        App\Book::create([
+          'item_name' => $faker->word(),
+          'item_number' => $faker->numberBetween(1, 999),
+          'item_amount' => $faker->numberBetween(100, 5000),
+          'published' => $faker->dateTime('now'),
+          'created_at' => $faker->dateTime('now'),
+          'updated_at' => $faker->dateTime('now'),
+          'user_id' => $faker->numberBetween(1, 3),
+        ]);
+      }
     }
 }
