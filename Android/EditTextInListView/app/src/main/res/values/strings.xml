@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">EditTextInListView</string>
+    <string name="hint">Fill in some texts.</string>
+    <string name="MyArrayAdapter">OK: MyArrayAdapter. Can save edited text.</string>
+    <string name="SimpleAdapter">NG: SimpleAdapter. Cannot save edited text!</string>
+    <string name="MySimpleAdapter">OK: MySimpleAdapter. Can save edited text.</string>
 </resources>
