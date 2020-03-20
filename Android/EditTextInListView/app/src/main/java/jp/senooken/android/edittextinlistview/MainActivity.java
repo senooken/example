@@ -1,5 +1,6 @@
 package jp.senooken.android.edittextinlistview;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -70,10 +71,9 @@ public class MainActivity extends AppCompatActivity {
             values_ = values;
         }
 
-        @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
-            convertView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.list_item, parent, false);
+        @Override @NonNull
+        public View getView(final int position, View convertView, @NonNull ViewGroup parent) {
+            convertView = getLayoutInflater().inflate(R.layout.list_item, parent, false);
             EditText editText = convertView.findViewById(R.id.edit_text);
             editText.setText(values_[position]);
             editText.addTextChangedListener(new TextWatcher() {
