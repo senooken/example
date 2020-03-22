@@ -1,13 +1,12 @@
 package jp.senooken.android.edittextinlistview;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import androidx.annotation.NonNull;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -71,9 +70,21 @@ public class MainActivity extends AppCompatActivity {
             values_ = values;
         }
 
-        @Override @NonNull
+        @Override
+        public int getViewTypeCount() {
+            return getCount();
+        }
+        @Override
+        public int getItemViewType(int position) {
+            return position;
+        }
+
+        @NonNull
+        @Override
         public View getView(final int position, View convertView, @NonNull ViewGroup parent) {
-            convertView = getLayoutInflater().inflate(R.layout.list_item, parent, false);
+            if (convertView == null) {
+                convertView = getLayoutInflater().inflate(R.layout.list_item, parent, false);
+            }
             EditText editText = convertView.findViewById(R.id.edit_text);
             editText.setText(values_[position]);
             editText.addTextChangedListener(new TextWatcher() {
@@ -104,9 +115,19 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
+        public int getViewTypeCount() {
+            return getCount();
+        }
+        @Override
+        public int getItemViewType(int position) {
+            return position;
+        }
+
+        @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
-            convertView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.list_item2, parent, false);
+            if (convertView == null) {
+                convertView = getLayoutInflater().inflate(R.layout.list_item2, parent, false);
+            }
             TextView textView = convertView.findViewById(R.id.bullet);
             textView.setText(data_.get(position).get("bullet"));
             EditText editText = convertView.findViewById(R.id.edit_text2);
