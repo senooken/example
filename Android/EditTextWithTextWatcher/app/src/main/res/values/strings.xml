@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">EditTextWithTextWatcher</string>
+    <string name="hint">Fill this.</string>
+    <string name="afterTextChanged">afterTextChanged: </string>
+    <string name="beforeTextChanged">beforeTextChanged: </string>
+    <string name="onTextChanged">onTextChanged: </string>
 </resources>
