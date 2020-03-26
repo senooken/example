@@ -5,7 +5,7 @@
 ## \copyright CC0
 ## \version   0.0.1
 ## \date      Created: 2019-10-05 Sat
-## \date      Updated: 2019-11-06 Wed
+## \date      Updated: 2020-03-26T20:02+09:00
 ## \sa        https://senooken.jp/blog/2019/10/05/
 ## \brief     Package partial upgrade partial with APT.
 ################################################################################
@@ -26,7 +26,7 @@ sleep 5
 
 ## Uninstall i386 and upgrade the others.
 while i=0 read -r pkg; do
-	echo $((i++)) $pkg
+	echo $((++i)) $pkg
 	case "$pkg" in
 		## i386 package is requied WINE.
 		# *i386) sudo apt remove -y $pkg;;
