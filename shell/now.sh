@@ -3,14 +3,14 @@
 ## \file      now.sh
 ## \author    SENOO, Ken
 ## \copyright CC0
-## \version   0.1.0
+## \version   0.1.1
 ## \date      Created: 2016-12-27T23:46+09:00
-## \date      Updated: 2020-03-29T10:40+09:00
+## \date      Updated: 2020-03-29T12:22+09:00
 ## \sa        https://senooken.jp/post/2016/12/27/
 ## \brief     Get current time in POSIX shell script.
 ################################################################################
 
-now()(
+now() {
 	EXE_NAME='now'
 	dt=$(date +%Y%m%dT%H%M%S)
 	OPTSTR=':hlst-:'
@@ -20,7 +20,7 @@ now()(
 
 	while getopts $OPTSTR opt; do
 		case "$opt${OPTARG:-}" in
-			l|-long)  dt=$(date +%Y-%m-%dT%H:%M:%S);;
+			l|-long)  is_opt_l='true' dt=$(date +%Y-%m-%dT%H:%M:%S);;
 			s|-short) dt=$(date +%Y%m%dT%H%M%S);;
 			t|-time-zone) is_opt_t='true';;
 			h|-help)
@@ -40,12 +40,19 @@ Print current date time with ISO 8601 format (YYYYmmddThhmmss).
 	done
 
 	if $is_opt_t; then
+		EXE_DIR=$(dirname "$0")
+		[ -r "$EXE_DIR/tz.sh" ] && . "$EXE_DIR/tz.sh"
+		command -v tz.sh >/dev/null && . tz.sh
+		if ! command -v tz >/dev/null; then
+			echo "tz command was not found. Time zone option (-t) is not enabled!" >&2
+			exit 1
+		fi
 		TIME_ZONE=$(tz)
-		[ -n "${dt%%*:*}" ] && TIME_ZONE=$(printf '%s\n' "$TIME_ZONE" | sed 's/://')
+		$is_opt_l && TIME_ZONE=$(echo "$TIME_ZONE" | sed 's/://')
 		dt="$dt$TIME_ZONE"
 	fi
 
 	echo "$dt"
-)
+}
 
 now ${1+"$@"}
