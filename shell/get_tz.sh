@@ -6,13 +6,13 @@
 ## \sa        https://senooken.jp/post/2016/12/27/
 ## \version   0.0.1
 ## \date      Created: 2016-12-27T23:46+09:00
-## \date      Updated: 2020-03-29T09:13+09:00
+## \date      Updated: 2020-03-29T09:14+09:00
 ## \brief     Get time zone in POSIX shell script.
 ################################################################################
 
 get_tz()(
-	set $(date -u '+%j %H %M'); U_D=${1#0}; U_D=${U_D#0}; U_H=${2#0}; U_M=${3#0}
-	set $(date    '+%j %H %M'); L_D=${1#0}; L_D=${L_D#0}; L_H=${2#0}; L_M=${3#0}
+	set $(date -u '+%j %H %M'); U_D=${1#0} U_D=${U_D#0} U_H=${2#0} U_M=${3#0}
+	set $(date    '+%j %H %M'); L_D=${1#0} L_D=${L_D#0} L_H=${2#0} L_M=${3#0}
 
 	# Fix if year is crossed
 	IS_CROSSED_YEAR="[ $L_D = 1 -o $U_D = 1 ] && [ $((L_D+U_D)) -gt 3 ]"
