@@ -5,7 +5,7 @@
 ## \copyright CC0
 ## \version   0.1.0
 ## \date      Created: 2016-12-27T23:46+09:00
-## \date      Updated: 2020-03-29T11:16+09:00
+## \date      Updated: 2020-03-29T11:38+09:00
 ## \sa        https://senooken.jp/post/2016/12/27/
 ## \brief     Get time zone in POSIX shell script.
 ################################################################################
@@ -28,4 +28,7 @@ tz() (
 	printf '%+03d:%+03d\n' $((dm / 60)) $((dm % 60)) | sed 's/:[+-]/:/'
 )
 
-[ 'tz.sh' = "${0##*/}" ] && tz
+is_main() { [ 'tz.sh' = "${0##*/}" ]; }
+if is_main; then
+	tz
+fi
