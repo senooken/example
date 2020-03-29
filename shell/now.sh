@@ -5,9 +5,9 @@
 ## \copyright CC0
 ## \version   0.2.0
 ## \date      Created: 2016-12-27T23:46+09:00
-## \date      Updated: 2020-03-29T12:30+09:00
+## \date      Updated: 2020-03-29T12:35+09:00
 ## \sa        https://senooken.jp/post/2016/12/27/
-## \brief     Current date time in POSIX shell script.
+## \brief     Print current date time in POSIX shell script.
 ################################################################################
 
 EXE_NAME='now'

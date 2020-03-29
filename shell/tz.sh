@@ -3,14 +3,16 @@
 ## \file      tz.sh
 ## \author    SENOO, Ken
 ## \copyright CC0
-## \version   0.1.0
+## \version   0.2.0
 ## \date      Created: 2016-12-27T23:46+09:00
-## \date      Updated: 2020-03-29T11:38+09:00
+## \date      Updated: 2020-03-29T12:30+09:00
 ## \sa        https://senooken.jp/post/2016/12/27/
-## \brief     Get time zone in POSIX shell script.
+## \brief     Print current time zone in POSIX shell script.
 ################################################################################
 
-tz() (
+EXE_NAME='tz'
+
+tz() {
 	set $(date -u '+%Y %j %H %M'); U_Y=$1 U_D=${2#0} U_D=${U_D#0} U_H=${3#0} U_M=${4#0}
 	set $(date    '+%Y %j %H %M'); L_Y=$1 L_D=${2#0} L_D=${L_D#0} L_H=${3#0} L_M=${4#0}
 
@@ -26,9 +28,22 @@ tz() (
 	[ $DIGIT_1 = 4 -o $DIGIT_1 = 9 ] && dm=$((dm<0 ? dm-1 : dm+1))
 
 	printf '%+03d:%+03d\n' $((dm / 60)) $((dm % 60)) | sed 's/:[+-]/:/'
-)
+}
 
-is_main() { [ 'tz.sh' = "${0##*/}" ]; }
-if is_main; then
-	tz
-fi
+main() {
+	## \brief Initialize POSIX shell environment
+	init() {
+		PATH="$(command -p getconf PATH 2>&-):${PATH:-.}"
+		export PATH="${PATH#:}" LC_ALL='C'
+		umask 0022
+		set -eu
+	}
+
+	is_main() { [ "$EXE_NAME.sh" = "${0##*/}" ]; }
+	if is_main; then
+		init
+		$EXE_NAME ${1+"$@"}
+	fi
+}
+
+main ${1+"$@"}
