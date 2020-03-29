@@ -5,12 +5,12 @@
 ## \copyright CC0
 ## \version   0.1.0
 ## \date      Created: 2016-12-27T23:46+09:00
-## \date      Updated: 2020-03-29T09:55+09:00
+## \date      Updated: 2020-03-29T11:16+09:00
 ## \sa        https://senooken.jp/post/2016/12/27/
 ## \brief     Get time zone in POSIX shell script.
 ################################################################################
 
-tz()(
+tz() (
 	set $(date -u '+%Y %j %H %M'); U_Y=$1 U_D=${2#0} U_D=${U_D#0} U_H=${3#0} U_M=${4#0}
 	set $(date    '+%Y %j %H %M'); L_Y=$1 L_D=${2#0} L_D=${L_D#0} L_H=${3#0} L_M=${4#0}
 
@@ -28,4 +28,4 @@ tz()(
 	printf '%+03d:%+03d\n' $((dm / 60)) $((dm % 60)) | sed 's/:[+-]/:/'
 )
 
-tz
+[ 'tz.sh' = "${0##*/}" ] && tz
