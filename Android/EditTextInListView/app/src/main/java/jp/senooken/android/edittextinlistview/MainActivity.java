@@ -57,9 +57,7 @@ public class MainActivity extends AppCompatActivity {
         list3.add(map4);
 
         ListView listView3 = findViewById(R.id.listView3);
-        listView3.setAdapter(
-                new MySimpleAdapter(this, list3)
-        );
+        listView3.setAdapter(new MySimpleAdapter(this, list3));
     }
 
     private class MyArrayAdapter extends ArrayAdapter<String> {
