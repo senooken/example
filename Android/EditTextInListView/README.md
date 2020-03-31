@@ -5,6 +5,19 @@
 
 Androidアプリにおける`ListView`内に`EditText`が配置されたウィジェットのサンプルを開発した。
 
+## 実行イメージ
+アプリの実行イメージを以下に掲載する。
+
+![image](image.jpg)
+
+このアプリでは3の`ListView`が実装されている。
+
+1番目のブロックは`ListView`に`ArrayAdapter`の実装を設定したものとなっており，`ListView`内に`EditText`だけを配置するシンプルな実装となっている。
+
+2番目のブロックは`ListView`に`SimpleAdapter`を設定したものとなっている。`getView`を自分で実装していないため，`EditText`に`TextWatcher`を設定できておらず，**`EditText`への入力内容が維持されないNGなケース**となっている。
+
+3番目のブロックは`ListView`に`SimpleAdapter`の実装を設定したものとなっている。`ArrayAdapter`と異なり`ListView`内に複数のウィジェットを配置した複雑なウィジェットの例となっている。
+
 ## 説明
 `EditText`を編集可能にするには，`addTextChangedListener`で`TextWatcher`の実装を追加する必要がある。
 
@@ -86,16 +99,3 @@ public class MainActivity extends AppCompatActivity {
 ```
 
 詳細は不明なのだが，このコードがないと1個目と2個目の`EditText`に入力した内容が同じになってしまう。
-
-## 実行イメージ
-アプリの実行イメージを以下に掲載する。
-
-![image](image.jpg)
-
-このアプリでは3の`ListView`が実装されている。
-
-1番目のブロックは`ListView`に`ArrayAdapter`の実装を設定したものとなっており，`ListView`内に`EditText`だけを配置するシンプルな実装となっている。
-
-2番目のブロックは`ListView`に`SimpleAdapter`を設定したものとなっている。`getView`を自分で実装していないため，`EditText`に`TextWatcher`を設定できておらず，**`EditText`への入力内容が維持されないNGなケース**となっている。
-
-3番目のブロックは`ListView`に`SimpleAdapter`の実装を設定したものとなっている。`ArrayAdapter`と異なり`ListView`内に複数のウィジェットを配置した複雑なウィジェットの例となっている。
