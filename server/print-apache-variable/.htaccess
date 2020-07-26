@@ -27,7 +27,7 @@ Redirect "/redirect" /redirected?https=%{HTTPS}&ua=%{HTTP_USER_AGENT}
 # Error "HTTPS=%{HTTP_HOST}"
 
 ## ErrorDocumentでエラー画面に表示
-<If "%{REQUEST_URI} =~ m#^/variable$#">
+<If "%{REQUEST_URI} == '/variable'">
 ErrorDocument 404 "<!DOCTYPE html>						\
 <html lang='en' xml:lang='en' xmlns='http://www.w3.org/1999/xhtml'>						\
 <head>						\
