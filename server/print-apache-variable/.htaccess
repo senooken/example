@@ -1,0 +1,112 @@
+################################################################################
+## \file      .htaccess
+## \author    SENOO, Ken
+## \copyright CC0
+## \date      Created: 2020-07-27T05:02+09:00
+## \sa        https://senooken.jp/post/2020/09/11/
+## \brief     Apacheの変数の確認方法
+##
+## 事前に `httpd.conf` で `AllowOverride FileInfo` を指定しておく。
+################################################################################
+
+## RewriteRuleのリダイレクトでクエリー文字列に指定
+<IfModule rewrite_module>
+  RewriteEngine on
+  RewriteRule ^rewrite /rewritten?https=%{HTTPS}&ua=%{HTTP_USER_AGENT} [L,R]
+</IfModule>
+
+## Redirectだとクエリーの変数が展開されない
+Redirect "/redirect" /redirected?https=%{HTTPS}&ua=%{HTTP_USER_AGENT}
+
+## HeaderでHTTP応答ヘッダーに出力
+<IfModule headers_module>
+  Header append Variable "HTTPS=%{HTTPS}e"
+</IfModule>
+
+## Errorでのerror_logでの出力時は変数を展開しない
+# Error "HTTPS=%{HTTP_HOST}"
+
+## ErrorDocumentでエラー画面に表示
+<If "%{REQUEST_URI} =~ m#^/variable$#">
+ErrorDocument 404 "<!DOCTYPE html>						\
+<html lang='en' xml:lang='en' xmlns='http://www.w3.org/1999/xhtml'>						\
+<head>						\
+<meta charset='UTF-8' />						\
+<meta name='author' content='SENOO, Ken' />						\
+</head>						\
+<body><main><section>						\
+<h1>Apache HTTP Server standard variables</h1>						\
+<p>This page show Apache HTTP Server (httpd) standard variables (ex. <a href='https://httpd.apache.org/docs/2.4/expr.html#vars'>Expressions in Apache HTTP Server - Apache HTTP Server Version 2.4</a>)</p>						\
+<p>Variables is listed on v2.4 (2020-07-26 Sun).</p>						\
+<table>						\
+<caption>HTTP header related variables</caption>						\
+<thead>						\
+	<tr><th>	Variable	</th><th>	Value	</th></tr>	\
+</thead><tbody>						\
+	<tr><td>	HTTP_ACCEPT	</td><td>	%{HTTP_ACCEPT}	</td></tr>	\
+	<tr><td>	HTTP_COOKIE	</td><td>	%{HTTP_COOKIE}	</td></tr>	\
+	<tr><td>	HTTP_FORWARDED	</td><td>	%{HTTP_FORWARDED}	</td></tr>	\
+	<tr><td>	HTTP_HOST	</td><td>	%{HTTP_HOST}	</td></tr>	\
+	<tr><td>	HTTP_PROXY_CONNECTION	</td><td>	%{HTTP_PROXY_CONNECTION}	</td></tr>	\
+	<tr><td>	HTTP_REFERER	</td><td>	%{HTTP_REFERER}	</td></tr>	\
+	<tr><td>	HTTP_USER_AGENT	</td><td>	%{HTTP_USER_AGENT}	</td></tr>	\
+</tbody></table>						\
+<table>						\
+<caption>Misc variables</caption>						\
+<thead>						\
+	<tr><th>	Variable	</th><th>	Value	</th></tr>	\
+</thead><tbody>						\
+	<tr><td>	TIME_YEAR	</td><td>	%{TIME_YEAR}	</td></tr>	\
+	<tr><td>	TIME_MON	</td><td>	%{TIME_MON}	</td></tr>	\
+	<tr><td>	TIME_DAY	</td><td>	%{TIME_DAY}	</td></tr>	\
+	<tr><td>	TIME_HOUR	</td><td>	%{TIME_HOUR}	</td></tr>	\
+	<tr><td>	TIME_MIN	</td><td>	%{TIME_MIN}	</td></tr>	\
+	<tr><td>	TIME_SEC	</td><td>	%{TIME_SEC}	</td></tr>	\
+	<tr><td>	TIME_WDAY	</td><td>	%{TIME_WDAY}	</td></tr>	\
+	<tr><td>	TIME	</td><td>	%{TIME}	</td></tr>	\
+	<tr><td>	SERVER_SOFTWARE	</td><td>	%{SERVER_SOFTWARE}	</td></tr>	\
+	<tr><td>	API_VERSION	</td><td>	%{API_VERSION}	</td></tr>	\
+</tbody></table>						\
+<table>						\
+<caption>Other request related variables</caption>						\
+<thead>						\
+	<tr><th>	Variable	</th><th>	Value	</th></tr>	\
+</thead><tbody>						\
+	<tr><td>	REQUEST_METHOD	</td><td>	%{REQUEST_METHOD}	</td></tr>	\
+	<tr><td>	REQUEST_SCHEME	</td><td>	%{REQUEST_SCHEME}	</td></tr>	\
+	<tr><td>	REQUEST_URI	</td><td>	%{REQUEST_URI}	</td></tr>	\
+	<tr><td>	DOCUMENT_URI	</td><td>	%{DOCUMENT_URI}	</td></tr>	\
+	<tr><td>	REQUEST_FILENAME	</td><td>	%{REQUEST_FILENAME}	</td></tr>	\
+	<tr><td>	SCRIPT_FILENAME	</td><td>	%{SCRIPT_FILENAME}	</td></tr>	\
+	<tr><td>	LAST_MODIFIED	</td><td>	%{LAST_MODIFIED}	</td></tr>	\
+	<tr><td>	SCRIPT_USER	</td><td>	%{SCRIPT_USER}	</td></tr>	\
+	<tr><td>	SCRIPT_GROUP	</td><td>	%{SCRIPT_GROUP}	</td></tr>	\
+	<tr><td>	PATH_INFO	</td><td>	%{PATH_INFO}	</td></tr>	\
+	<tr><td>	QUERY_STRING	</td><td>	%{QUERY_STRING}	</td></tr>	\
+	<tr><td>	IS_SUBREQ	</td><td>	%{IS_SUBREQ}	</td></tr>	\
+	<tr><td>	THE_REQUEST	</td><td>	%{THE_REQUEST}	</td></tr>	\
+	<tr><td>	REMOTE_ADDR	</td><td>	%{REMOTE_ADDR}	</td></tr>	\
+	<tr><td>	REMOTE_PORT	</td><td>	%{REMOTE_PORT}	</td></tr>	\
+	<tr><td>	REMOTE_HOST	</td><td>	%{REMOTE_HOST}	</td></tr>	\
+	<tr><td>	REMOTE_USER	</td><td>	%{REMOTE_USER}	</td></tr>	\
+	<tr><td>	REMOTE_IDENT	</td><td>	%{REMOTE_IDENT}	</td></tr>	\
+	<tr><td>	SERVER_NAME	</td><td>	%{SERVER_NAME}	</td></tr>	\
+	<tr><td>	SERVER_PORT	</td><td>	%{SERVER_PORT}	</td></tr>	\
+	<tr><td>	SERVER_ADMIN	</td><td>	%{SERVER_ADMIN}	</td></tr>	\
+	<tr><td>	SERVER_PROTOCOL	</td><td>	%{SERVER_PROTOCOL}	</td></tr>	\
+	<tr><td>	DOCUMENT_ROOT	</td><td>	%{DOCUMENT_ROOT}	</td></tr>	\
+	<tr><td>	AUTH_TYPE	</td><td>	%{AUTH_TYPE}	</td></tr>	\
+	<tr><td>	CONTENT_TYPE	</td><td>	%{CONTENT_TYPE}	</td></tr>	\
+	<tr><td>	HANDLER	</td><td>	%{HANDLER}	</td></tr>	\
+	<tr><td>	HTTP2	</td><td>	%{HTTP2}	</td></tr>	\
+	<tr><td>	HTTPS	</td><td>	%{HTTPS}	</td></tr>	\
+	<tr><td>	IPV6	</td><td>	%{IPV6}	</td></tr>	\
+	<tr><td>	REQUEST_STATUS	</td><td>	%{REQUEST_STATUS}	</td></tr>	\
+	<tr><td>	REQUEST_LOG_ID	</td><td>	%{REQUEST_LOG_ID}	</td></tr>	\
+	<tr><td>	CONN_LOG_ID	</td><td>	%{CONN_LOG_ID}	</td></tr>	\
+	<tr><td>	CONN_REMOTE_ADDR	</td><td>	%{CONN_REMOTE_ADDR}	</td></tr>	\
+	<tr><td>	CONTEXT_PREFIX	</td><td>	%{CONTEXT_PREFIX}	</td></tr>	\
+	<tr><td>	CONTEXT_DOCUMENT_ROOT	</td><td>	%{CONTEXT_DOCUMENT_ROOT}	</td></tr>	\
+</tbody></table>						\
+</section><main></body></html>"
+</If>
