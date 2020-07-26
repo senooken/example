@@ -1,17 +1,15 @@
 # Apacheの変数の表示方法
 ## 概要
-Apache HTTP Server (httpd) での変数の表示方法を整理した。
+Apache HTTP Server (httpd) での変数の表示方法を整理した。 httpd v2.4.39で確認した。
 
 [ブログ](https://senooken.jp/post/2020/09/11/)に詳細を記している。
-
-httpd v2.4.39で確認した。
 
 ## ファイル
 ディレクトリー内に以下のファイルを格納している。
 
 - README.md: 説明。
 - `.htaccess`: `.htaccess`での設定例
-- `variable.html`: ローカルサーバー (<https://localhost:8443/variable?q1=query1&q2=query2#id>) へのアクセス時の変数一覧
+- [`variable.html`](https://senooken.github.io/example/server/print-apache-variable/variable.html): ローカルサーバー (<https://localhost:8443/variable?q1=query1&q2=query2#id>) へのアクセス時の変数一覧
 
 ## 方法
 Apacheでの変数の表示には，以下の3種類の方法がある。
