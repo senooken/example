@@ -1,0 +1,25 @@
+################################################################################
+## \file      .htaccess
+## \author    SENOO, Ken
+## \copyright CC0
+## \date      Created: 2020-08-09T14:36+09:00
+## \sa        https://senooken.jp/post/2020/09/30/
+## \brief     Apache HTTP Serverでの常時HTTPS化の設定
+################################################################################
+
+## `httpd.conf` で以下の3指令を指定しておく。
+# LoadModule headers_module modules/mod_headers.so
+# LoadModule rewrite_module modules/mod_rewrite.so
+# AllowOverride FileInfo
+
+<If "%{HTTPS} == 'on'">
+  <IfModule headers_module>
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+  </IfModule>
+</If>
+<ElseIf "%{REQUEST_URI} !~ m#^/.well-known#">
+  <IfModule rewrite_module>
+    RewriteEngine On
+    RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI}?%{QUERY_STRING} [L,R=301]
+  </IfModule>
+</ElseIf>
