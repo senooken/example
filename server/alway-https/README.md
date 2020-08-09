@@ -22,7 +22,7 @@ Apache HTTP Serverでの常時HTTPS化の設定を記す。
 ```
 <If "%{HTTPS} == 'on'">
   <IfModule headers_module>
-    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
   </IfModule>
 </If>
 <ElseIf "%{REQUEST_URI} !~ m#^/.well-known#">
