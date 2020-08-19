@@ -11,8 +11,8 @@
 
 ## RewriteRuleのリダイレクトでクエリー文字列に指定
 <IfModule rewrite_module>
-  RewriteEngine on
-  RewriteRule ^rewrite /rewritten?https=%{HTTPS}&ua=%{HTTP_USER_AGENT} [L,R]
+    RewriteEngine on
+    RewriteRule ^rewrite /rewritten?https=%{HTTPS}&ua=%{HTTP_USER_AGENT} [L,R]
 </IfModule>
 
 ## Redirectだとクエリーの変数が展開されない
@@ -20,7 +20,7 @@ Redirect "/redirect" /redirected?https=%{HTTPS}&ua=%{HTTP_USER_AGENT}
 
 ## HeaderでHTTP応答ヘッダーに出力
 <IfModule headers_module>
-  Header append Variable "HTTPS=%{HTTPS}e"
+    Header append Variable "HTTPS=%{HTTPS}e"
 </IfModule>
 
 ## Errorでのerror_logでの出力時は変数を展開しない
