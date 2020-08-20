@@ -21,15 +21,11 @@ Apache HTTP Serverでの常時HTTPS化の設定を記す。
 
 ```
 <If "%{HTTPS} == 'on'">
-    <IfModule headers_module>
-        Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
-    </IfModule>
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
 </If>
 <ElseIf "%{REQUEST_URI} !~ m#^/\.well-known#">
-    <IfModule rewrite_module>
-        RewriteEngine On
-        RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI}?%{QUERY_STRING} [L,R=301]
-    </IfModule>
+    RewriteEngine On
+    RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI}?%{QUERY_STRING} [L,R=301]
 </ElseIf>
 ```
 
