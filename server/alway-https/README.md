@@ -25,7 +25,7 @@ Apache HTTP Serverでの常時HTTPS化の設定を記す。
         Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
     </IfModule>
 </If>
-<ElseIf "%{REQUEST_URI} !~ m#^/.well-known#">
+<ElseIf "%{REQUEST_URI} !~ m#^/\.well-known#">
     <IfModule rewrite_module>
         RewriteEngine On
         RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI}?%{QUERY_STRING} [L,R=301]
