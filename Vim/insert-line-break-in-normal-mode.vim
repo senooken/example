@@ -12,7 +12,9 @@ augroup main
 augroup END
 
 "" Insert line break by Enter in normal mode
-autocmd main BufEnter *
+autocmd main BufWinEnter *
   \  if &modifiable
   \|   nnoremap <buffer> <CR> i<CR><ESC>
+  \| else
+  \|   nunmap <buffer> <CR>
   \| endif
