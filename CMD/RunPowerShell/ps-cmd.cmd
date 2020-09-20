@@ -1,5 +1,5 @@
 @echo off
-:: -Command/-cと-File/-fのオプション指定は省略可能な模様
+:: -Commandと-Fileのオプション指定は省略可能な模様
 :: 1. コマンド引数による実行
 powershell ^
   $var = 'argument'; ^
