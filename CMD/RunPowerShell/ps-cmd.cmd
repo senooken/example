@@ -15,5 +15,6 @@ echo ^
 echo $var = 'file'>>file.ps1
 echo echo $var>>file.ps1
 type file.ps1 | powershell -
+powershell - <file.ps1
 powershell -ExecutionPolicy Unrestricted .\file.ps1
 del file.ps1
