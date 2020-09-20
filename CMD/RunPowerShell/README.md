@@ -15,7 +15,7 @@ cmd.exeからPowerShellを実行する4の方法を整理した。
 
 これらのファイルを実行すると，それぞれ以下の内容が表示される。
 
-* ps-cmd.cmd: `argument, stdin, file, file`
+* ps-cmd.cmd: `argument, stdin, file, file, file`
 * ps-self.cmd: `powershell`
 
 cmd.exeからPowerShellを実行する方法は大きく以下の3通りが存在する (ps-cmd.cmd)。
