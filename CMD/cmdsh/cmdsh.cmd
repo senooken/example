@@ -19,3 +19,5 @@ exit /b
 
 : sh block
 echo sh
+
+:; echo sh one line
