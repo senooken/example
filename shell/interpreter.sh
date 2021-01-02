@@ -1,4 +1,4 @@
-command -p tail -n +2 "$0" | command -p "${1?Set interpreter (ex: php, perl, python, ruby etc) to 1st argument.}" ${1+"$@"}; exit $?
+command -p tail -n +2 "$0" | exec "${1?Set interpreter (ex: php, perl, python, ruby etc) to 1st argument.}" ${2+"$@"}
 ## \file interpreter.sh
 ## \authore SENOO, Ken
 ## \copyright CC0
@@ -16,10 +16,10 @@ command -p tail -n +2 "$0" | command -p "${1?Set interpreter (ex: php, perl, pyt
 
 ## これにより，指定したインタープリターでプログラムが実行される。中身は全てコメントなので，何も表示されない。
 
-## 実際には，以下のように冒頭の1行目の `command -p` の直後に実行したいインタープリターを記入して使うことになるだろう。
+## 実際には，以下のように冒頭の1行目の `exec` の直後に実行したいインタープリターを記入して使うことになるだろう。
 
 ## ```
-## command -p tail -n +2 "$0" | command -p php ${1+"$@"}; exit $?
+## command -p tail -n +2 "$0" | exec php ${1+"$@"}
 ## ```
 
 ## 仕組みとしては，`command -p tail -n +2 "$0" によりファイルの2行目以降を抽出し，インタープリターにパイプで渡す。
@@ -31,7 +31,6 @@ command -p tail -n +2 "$0" | command -p "${1?Set interpreter (ex: php, perl, pyt
 ## 1. どのインタープリターでも同じ書き方で対応可能。
 ## 2. /bin/shが存在しないOS (Andorid) でも対応可能。
 ## 3. 2個以上の複雑な引数も引き渡し可能。
-## 4. 組み込みコマンドのcommand -pにより仮にPATH環境変数が空でも実行可能性上昇。
 
 ## 逆に，欠点は以下2点だ。
 
