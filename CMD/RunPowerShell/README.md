@@ -1,7 +1,7 @@
 ﻿# RunPowerShell
 cmd.exeからPowerShellを実行する4の方法を整理した。
 
-> 参考: [cmd.exeからPowerShellを実行する4の方法](https://senooken.jp/blog/2019/07/07/)
+> 参考: [cmd.exeからPowerShellを実行する4の方法](https://senooken.jp/post/2019/07/07/)
 
 以下の環境で動作を確認した。
 
@@ -28,7 +28,7 @@ cmd.exeからPowerShellを実行する方法は大きく以下の3通りが存�
 
 3番目のファイルを使った実行方法を応用して，PowerShellコードを記述した単独ファイルの実行 (4. 単独ファイル) が4番目の方法だ (ps-self.cmd)。
 
-仕組み自体は，「[シバンなしファイルでのスクリプト系言語のインタープリターの実行](https://senooken.jp/blog/2019/06/16/)」と同様だ。
+仕組み自体は，「[シバンなしファイルでのスクリプト系言語のインタープリターの実行](https://senooken.jp/post/2019/06/16/)」と同様だ。
 
 つまり，ファイル内の2行目以降の内容をインタープリターであるPowerShellに渡して，シェルであるcmd.exe自体は即座に終了させる。
 
