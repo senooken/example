@@ -1,4 +1,4 @@
-command -p tail -n +2 "$0" | exec "${1?Set interpreter (ex: php, perl, python, ruby etc) to 1st argument.}" ${2+"$@"}
+command -p tail -n +2 "$0" | exec "${1?Set interpreter (ex: php, perl, python, ruby etc) to 1st argument.}" ${2+"$@"}; exit $?
 ## \file interpreter.sh
 ## \authore SENOO, Ken
 ## \copyright CC0
@@ -19,7 +19,7 @@ command -p tail -n +2 "$0" | exec "${1?Set interpreter (ex: php, perl, python, r
 ## 実際には，以下のように冒頭の1行目の `exec` の直後に実行したいインタープリターを記入して使うことになるだろう。
 
 ## ```
-## command -p tail -n +2 "$0" | exec php ${1+"$@"}
+## command -p tail -n +2 "$0" | exec php ${1+"$@"}; exit $?
 ## ```
 
 ## 仕組みとしては，`command -p tail -n +2 "$0" によりファイルの2行目以降を抽出し，インタープリターにパイプで渡す。
