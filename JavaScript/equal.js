@@ -10,14 +10,16 @@
 "use strict";
 
 /**
- * データが同じ値であることを確認する。
- * @param {Object} object1 - 比較対象オブジェクト1。
- * @param {Object} object2 - 比較対象オブジェクト2。
- * @return {boolean} データが同じ値であればtrue、それ以外はfalseを返す。
+ * Check if same value.
+ * @param {Object} object1 - Target object1.
+ * @param {Object} object2 - Target object2.
+ * @return {boolean} True if both of objects are same value, otherwise false.
  */
 function equal(object1, object2) {
-  if (typeof object1 !== 'object') {
+  if (typeof object1 !== 'object' || typeof object2 !== 'object') {
     return object1 === object2;
+  } else if (Object.keys(object1).length !== Object.keys(object2).length) {
+    return false;
   } else if (object1 === object2) {
     return true;
   }
@@ -25,7 +27,7 @@ function equal(object1, object2) {
     if (!(key in object2)) {
       return false;
     }
-    if (typeof object1[key] === 'object') {
+    if (typeof object1[key] === 'object' && typeof object2[key] === 'object') {
       if (!this.equal(object1[key], object2[key])) {
         return false;
       }
