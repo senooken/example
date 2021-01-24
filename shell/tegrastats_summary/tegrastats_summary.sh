@@ -35,33 +35,75 @@
 ## 平均値と最大最小値を取得する。
 ## 
 ## 使用する列
-## - 2: 消費メモリー
+## - 02: 消費メモリー
 ## - 13, 15, 17, 19: CPU使用率
 ## - 25: GPU使用率
+## - 27: 温度 PLL
+## - 29: 温度 CPU
+## - 31: 温度 PMIC
+## - 33: 温度 GPU
+## - 35: 温度 AO
+## - 37: 温度 温度センサー
+## - 40: 消費電力 POM_5V_IN
+## - 43: 消費電力 POM_5V_GPU
+## - 46: 消費電力 POM_5V_CPU
+
 ################################################################################
+
+
+## 列をforで回して，1文字目が文字ならスキップ，そうでなければ集計するみたいな？
 
 EXE_NAME='tegrastats_summary'
 tegrastats_summary() {
 	awk '
-function fmin(left, right) {return int(left) < int(right) ? left : right}
-function fmax(left, right) {return int(left) > int(right) ? left : right}
-BEGIN {FS="[] [,@/]"}
+function fmin(left, right) {return (left+0) < (right+0) ? left+0 : right+0}
+function fmax(left, right) {return (left+0) > (right+0) ? left+0 : right+0}
+function get_unit(name) {
+	if (name == "RAM") {
+		return "[MB]"
+	} else if (name == "CPU") {
+		return "[%]"
+	} else if (name == "PLL") {
+		return "[C]"
+	} else if (name == "POM_5V_IN") {
+		return "[mW]"
+	}
+	return ""
+}
+BEGIN {FS="[] [,@/()]*"}
 {
-	memory["sum"] += $2
-	memory["min"] = memory["min"] ? fmin(memory["min"], $2) : $2
-	memory["max"] = fmax(memory["max"], $2)
-	gpu["sum"] += $25
-	gpu["min"] = gpu["min"] ? fmin(gpu["min"], $25): $25
-	gpu["max"] = fmax(gpu["max"], $25)
-	cpu["sum"] += $13 + $15 + $17 + $19
-	cpu["min"] = cpu["min"] ? fmin(fmin(fmin(fmin(cpu["min"], $13), $15), $17),$19) : $13
-	cpu["max"] = fmax(fmax(fmax(fmax(cpu["max"], $13), $15), $17), $19)
+	for (col = 1; col <= NF; ++col) {
+		if ($col !~ /^[0-9]/) {
+			if (length(get_unit($col))) {
+				if (unit != "[C]" || get_unit($col) != "[%]") {
+					unit = get_unit($col)
+				}
+			}
+			header = $col unit
+			continue
+		}
+		array[col]["name"] = header
+		array[col]["mean"] = (array[col]["mean"]*(NR-1) + $col) / NR
+		array[col]["min"] = length(array[col]["min"]) ? fmin(array[col]["min"], $col) : $col
+		array[col]["max"] = fmax(array[col]["max"], $col)
+		if (header == "CPU[%]") {
+			header = "CPU[MHz]"
+		} else if (header == "CPU[MHz]") {
+			header = "CPU[%]"
+		}
+	}
 }
 END {
-	print "Type\tMemory[MB]\tCPU\tGPU"
-	print "Mean\t" memory["sum"]/NR "\t" cpu["sum"]/NR/4 "%\t" gpu["sum"]/NR "%"
-	print "Min\t" memory["min"] "\t" cpu["min"] "\t" gpu["min"]
-	print "Max\t" memory["max"] "\t" cpu["max"] "\t" gpu["max"]
+	ORS="\t"
+	split("name,mean,min,max", labels, ",")
+	for (label = 1; label <= length(labels); ++label) {
+		print labels[label]
+		for (col = 1; col <= NF; ++col) {
+			if (!length(array[col][labels[label]])) continue
+			print array[col][labels[label]]
+		}
+		printf("\n")
+	}
 }'
 }
 
