@@ -98,10 +98,32 @@ END {
 	split("name,mean,min,max", labels, ",")
 	for (label = 1; label <= length(labels); ++label) {
 		print labels[label]
-		for (col = 1; col <= NF; ++col) {
-			if (!length(array[col][labels[label]])) continue
-			print array[col][labels[label]]
+		## Parital
+		if (1) {
+			print array[2][labels[label]] # RAM
+			## CPU [%]
+			if (label == 1) {
+				print array[12][labels[label]]
+			} else {
+				print (array[12][labels[label]] + array[14][labels[label]] + array[16][labels[label]] + array[18][labels[label]])/4 # CPU [%]
+			}
+			print array[23][labels[label]] # GPU [%]
+
+			print array[27][labels[label]] # CPU [C]
+			print array[31][labels[label]] # GPU [C]
+
+			## mW
+			for (col = 38; col <= NF; col += 3) {
+				print array[col][labels[label]]
+			}
+		} else {
+		## All column
+		# for (col = 1; col <= NF; ++col) {
+		# 	if (!length(array[col][labels[label]])) continue
+		# 	print array[col][labels[label]]
+		# }
 		}
+
 		printf("\n")
 	}
 }'
