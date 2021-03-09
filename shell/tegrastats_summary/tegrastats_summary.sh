@@ -55,7 +55,7 @@
 
 EXE_NAME='tegrastats_summary'
 tegrastats_summary() {
-	awk '
+	mawk '
 function fmin(left, right) {return (left+0) < (right+0) ? left+0 : right+0}
 function fmax(left, right) {return (left+0) > (right+0) ? left+0 : right+0}
 function get_unit(name) {
@@ -82,10 +82,10 @@ BEGIN {FS="[] [,@/()]*"}
 			header = $col unit
 			continue
 		}
-		array[col]["name"] = header
-		array[col]["mean"] = (array[col]["mean"]*(NR-1) + $col) / NR
-		array[col]["min"] = length(array[col]["min"]) ? fmin(array[col]["min"], $col) : $col
-		array[col]["max"] = fmax(array[col]["max"], $col)
+		array[col, "name"] = header
+		array[col, "mean"] = (array[col, "mean"]*(NR-1) + $col) / NR
+		array[col, "min"] = length(array[col, "min"]) ? fmin(array[col, "min"], $col) : $col
+		array[col, "max"] = fmax(array[col, "max"], $col)
 		if (header == "CPU[%]") {
 			header = "CPU[MHz]"
 		} else if (header == "CPU[MHz]") {
@@ -100,27 +100,27 @@ END {
 		print labels[label]
 		## Parital
 		if (1) {
-			print array[2][labels[label]] # RAM
+			print array[2, labels[label]] # RAM
 			## CPU [%]
 			if (label == 1) {
-				print array[12][labels[label]]
+				print array[12, labels[label]]
 			} else {
-				print (array[12][labels[label]] + array[14][labels[label]] + array[16][labels[label]] + array[18][labels[label]])/4 # CPU [%]
+				print (array[12, labels[label]] + array[14, labels[label]] + array[16, labels[label]] + array[18, labels[label]])/4 # CPU [%]
 			}
-			print array[23][labels[label]] # GPU [%]
+			print array[23, labels[label]] # GPU [%]
 
-			print array[27][labels[label]] # CPU [C]
-			print array[31][labels[label]] # GPU [C]
+			print array[27, labels[label]] # CPU [C]
+			print array[31, labels[label]] # GPU [C]
 
 			## mW
 			for (col = 38; col <= NF; col += 3) {
-				print array[col][labels[label]]
+				print array[col, labels[label]]
 			}
 		} else {
 		## All column
 		# for (col = 1; col <= NF; ++col) {
-		# 	if (!length(array[col][labels[label]])) continue
-		# 	print array[col][labels[label]]
+		# 	if (!length(array[col, labels[label]])) continue
+		# 	print array[col, labels[label]]
 		# }
 		}
 
