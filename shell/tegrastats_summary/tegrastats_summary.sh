@@ -95,8 +95,8 @@ BEGIN {FS="[] [,@/()]*"}
 }
 END {
 	ORS="\t"
-	split("name,mean,min,max", labels, ",")
-	for (label = 1; label <= length(labels); ++label) {
+	num = split("name,mean,min,max", labels, ",")
+	for (label = 1; label <= num; ++label) {
 		print labels[label]
 		## Parital
 		if (1) {
