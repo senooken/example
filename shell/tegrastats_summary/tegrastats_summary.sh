@@ -50,12 +50,13 @@
 
 ################################################################################
 
-
 ## 列をforで回して，1文字目が文字ならスキップ，そうでなければ集計するみたいな？
 
 EXE_NAME='tegrastats_summary'
 tegrastats_summary() {
-	mawk '
+	is_partial=0
+	[ "${1-}" = '--partial' ] && is_partial=1
+	awk -v is_partial=$is_partial '
 function fmin(left, right) {return (left+0) < (right+0) ? left+0 : right+0}
 function fmax(left, right) {return (left+0) > (right+0) ? left+0 : right+0}
 function get_unit(name) {
@@ -99,7 +100,7 @@ END {
 	for (label = 1; label <= num; ++label) {
 		print labels[label]
 		## Parital
-		if (1) {
+		if (is_partial) {
 			print array[2, labels[label]] # RAM
 			## CPU [%]
 			if (label == 1) {
@@ -118,10 +119,10 @@ END {
 			}
 		} else {
 		## All column
-		# for (col = 1; col <= NF; ++col) {
-		# 	if (!length(array[col, labels[label]])) continue
-		# 	print array[col, labels[label]]
-		# }
+		for (col = 1; col <= NF; ++col) {
+			if (!length(array[col, labels[label]])) continue
+			print array[col, labels[label]]
+		}
 		}
 
 		printf("\n")
