@@ -3,7 +3,7 @@
 /// @file      wpmu_allow_single_site_username.php
 /// @author    SENOO, Ken
 /// @copyright CC0
-/// @url       https://senooken.jp/07/03/
+/// @url       https://senooken.jp/post/2022/07/03/
 //////////////////////////////////////////////////////////////////////////////
 add_filter( 'wpmu_validate_user_signup', 'wpmu_allow_single_site_username');
 /**
